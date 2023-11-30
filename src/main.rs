@@ -1,3 +1,5 @@
+// This needs to be refactored eventually
+
 //############### Configuration #################
 struct Config{
     parameters: Param,
@@ -34,6 +36,7 @@ impl Genome {
     fn new(config: Config, input_shape: (usize, usize, usize), layer_types: Vec<LayerType>) -> Genome {
         let mut layers = Vec<Layer>::new();
         for layer_type in layer_types.iter() {
+            // Build all of the layers here
             // ...
         }
         Genome {
