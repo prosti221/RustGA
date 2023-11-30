@@ -3,6 +3,7 @@ This needs to be refactored into seperate files eventully
     TODO:
         - Add python bindings with code for layer building and pytorch inference
         - Add mutation and crossover functionality on the layer level
+        - Figure out how to do multi-threading in rust
  */
 use core::panic;
 use ndarray::{Array, ShapeBuilder};
@@ -29,7 +30,6 @@ struct Config{
 #[derive(Copy, Clone, Debug)]
 struct GaParams {
     population_size: usize,
-    generations: usize,
     mutation_probability: f64,
     weight_mutation_probability: f64,
     weight_perturbation_magnitude: f64,
@@ -213,7 +213,6 @@ fn main() {
     let config : Config = Config {
         parameters: GaParams {
             population_size: 10,
-            generations: 10,
             mutation_probability: 0.1,
             weight_mutation_probability: 0.1,
             weight_perturbation_magnitude: 0.1,
