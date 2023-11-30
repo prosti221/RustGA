@@ -2,9 +2,9 @@
 
 //############### Configuration #################
 struct Config{
-    parameters: Param,
+    parameters: GaParams,
 }
-struct Param {
+struct GaParams {
     mutation_probability: f64,
     weight_mutation_probability: f64,
     weight_perturbation_magnitude: f64,
