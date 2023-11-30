@@ -1,4 +1,20 @@
 // This needs to be refactored eventually
+//use ndarray_linalg::norm::Norm;
+use ndarray::array;
+use ndarray::Array;
+use ndarray::Array2;
+use ndarray::Array3;
+
+
+//############### Utility functions #################
+pub fn compute_l2(a: &Array<f64, ndarray::Dim<[usize; 1]>>, b: &Array<f64, ndarray::Dim<[usize; 1]>>) -> f64 {
+    let mut distance: f64 = 0.0;
+    distance = (a - b).mapv(|x| x.powi(2)).sum();
+
+    return distance.sqrt();
+}
+
+//############### Utility functions #################
 
 //############### Configuration #################
 struct Config{
@@ -34,11 +50,7 @@ struct Genome {
 
 impl Genome {
     fn new(config: Config, input_shape: (usize, usize, usize), layer_types: Vec<LayerType>) -> Genome {
-        let mut layers = Vec<Layer>::new();
-        for layer_type in layer_types.iter() {
-            // Build all of the layers here
-            // ...
-        }
+        let mut layers: Vec<Layer> = Vec::new();
         Genome {
             config: config,
             input_shape: input_shape,
@@ -46,6 +58,19 @@ impl Genome {
             layers: layers,
             fitness: 0.0,
         }
+    }
+
+    fn compute_distance(&self, other: Genome) -> f64 {
+        let mut distance: f64 = 0.0;
+
+        for i in 0..self.layers.len() {
+            let layer_dist : f64 = compute_l2(&self.layers[i].weights, &other.layers[i].weights);
+
+            distance += layer_dist;
+
+            }
+        return distance / self.layers.len() as f64
+
     }
 }
 
@@ -75,7 +100,7 @@ impl Crossover<Genome> for Genome {
         if self.layers.len() != secondary_genome.layers.len() {
             panic!("Genomes must have the same number of layers to crossover");
         }
-        let mut new_layers = Vec<Layer>::new();
+        let mut new_layers: Vec<Layer> = Vec::new();
 
         for i in 0..self.layers.len() {
             let new_layer = self.layers[i].crossover(secondary_genome.layers[i]);
@@ -97,6 +122,7 @@ struct Layer {
     layer_type: LayerType,
     config: Config,
     input_shape: (usize, usize, usize),
+    weights: Array<f64, ndarray::Dim<[usize; 1]>>,
 }
 enum LayerType {
     Conv2d,
