@@ -1,7 +1,10 @@
+/*
+This needs to be refactored into seperate files eventully
+    TODO:
+        - Add python bindings with code for layer building and pytorch inference
+        - Add mutation and crossover functionality on the layer level
+ */
 use core::panic;
-
-// This needs to be refactored eventually
-//use ndarray_linalg::norm::Norm;
 use ndarray::{Array, ShapeBuilder};
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
@@ -221,11 +224,15 @@ fn main() {
     };
 
     let input_shape: (usize, usize) = (248, 512);
-
     let layer_types: Vec<LayerType> = vec![LayerType::Linear, LayerType::Linear, LayerType::Linear];
-
     let mut population: Population = Population::new(config, input_shape, layer_types);
+    let mut genome1 = population.genomes[0].clone();
+    let mut genome2 = population.genomes[1].clone();
 
-    println!("Population size: {:?}, Each genome has {:?} layers. Eeach layer has {:?} parameters", population.genomes.len(), population.genomes[0].layers.len(), population.genomes[0].layers[0].weights.len());
+    println!("Distance between genomes: {:?}", genome1.compute_distance(genome2));
+    println!("Population size: {:?}, Each genome has {:?} layers. Eeach layer has {:?} parameters",
+        population.genomes.len(), population.genomes[0].layers.len(), population.genomes[0].layers[0].weights.len()
+    );
+
     println!("Weights: {:?}", population.genomes[0].layers[0].weights);
 }
