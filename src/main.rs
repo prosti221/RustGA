@@ -1,5 +1,5 @@
 /*
-This needs to be refactored into seperate files eventully
+This needs to be refactored into seperate files eventually
     TODO:
         - Add python bindings with code for layer building and pytorch inference
         - Add mutation and crossover functionality on the layer level
